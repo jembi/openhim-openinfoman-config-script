@@ -1,12 +1,11 @@
 var assert = require('assert');
 var sinon = require('sinon');
-var PassThrough = require('stream').PassThrough;
+var nock = require("nock");
 var http = require('http');
  
 var app = require('../lib/app.js');
 
-
-var expected = {
+var expectedResponse = {
   "providers": {
       "careServicesRequest": "http://localhost:8984/CSD/csr/providers/careServicesRequest",
       "careServicesRequests": {
@@ -51,24 +50,14 @@ var expected = {
 
  
 describe('Get documents', function() {
-	beforeEach(function() {
-		this.request = sinon.stub(http, 'request');
+  beforeEach(function() {
+    nock("http://localhost:8984")
+      .get("/CSD/documents.json")
+      .reply(200, expectedResponse);
 	});
- 
-	afterEach(function() {
-		http.request.restore();
-	});
- 
- 
+  
   it('should convert openinfoman GET result to array of documents', function(done) {
-  	var response = new PassThrough();
-  	response.write(JSON.stringify(expected));
-  	response.end();
-   
-  	var request = new PassThrough();
-  	this.request.callsArgWith(1, response).returns(request);
-   
-  	app.getDocuments({}, function(err, result) {
+  	app.getDocuments(function(err, result) {
       if(err) {
         return done(err);
       }
@@ -77,5 +66,22 @@ describe('Get documents', function() {
       done();
     });
   });
- 
 });
+
+describe('Create Channel Config Object from Document Name', function() {
+  it('should create a channel config object', function(done) {
+  	app.createChannelConfigObject("DocumentName", function(err, result) {
+      if(err) {
+        return done(err);
+      }
+      assert.equal(result.name, 'DocumentName', "Channel Name");
+      assert.equal(result.urlPattern, '^/openinfoman/DocumentName$', "URL pattern");
+      assert.equal(result.allow[0], "admin", "Clients/Roles");
+      assert.equal(result.routes[0].name, 'DocumentName Route', "Route Name");
+      assert.equal(result.routes[0].host, 'localhost', "Host URL");
+      assert.equal(result.routes[0].port, 6000, "Host Port");
+      done();
+    });
+  });
+});
+
