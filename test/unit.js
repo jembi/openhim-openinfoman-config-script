@@ -77,5 +77,4 @@ describe('Get documents', function() {
       done();
     });
   });
- 
 });

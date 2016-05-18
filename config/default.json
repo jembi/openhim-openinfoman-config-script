@@ -1,0 +1,8 @@
+{
+  "openinfoman": {
+    "hostname": "localhost",
+    "port": 8984,
+    "path": "/CSD/documents.json",
+    "agent": false
+  }
+}
