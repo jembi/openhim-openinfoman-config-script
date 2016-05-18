@@ -2,7 +2,7 @@ var assert = require('assert');
 var sinon = require('sinon');
 var nock = require("nock");
 var http = require('http');
- 
+
 var app = require('../lib/app.js');
 
 var expectedResponse = {
@@ -48,14 +48,20 @@ var expectedResponse = {
   }
 };
 
- 
+var fs = require("fs");
+var testChannels = JSON.parse(fs.readFileSync("config/test_channels.json"));
+
+var validChannelConfig = testChannels.valid;
+var invalidChannelConfig = testChannels.invalid;
+
+
 describe('Get documents', function() {
   beforeEach(function() {
     nock("http://localhost:8984")
       .get("/CSD/documents.json")
       .reply(200, expectedResponse);
 	});
-  
+
   it('should convert openinfoman GET result to array of documents', function(done) {
   	app.getDocuments(function(err, result) {
       if(err) {
@@ -63,6 +69,29 @@ describe('Get documents', function() {
       }
       assert.equal(result[0], 'providers', "Correct result array");
       assert.equal(result[1], 'RapidProContacts', "Correct result array");
+      done();
+    });
+  });
+});
+
+describe('Register Channel: ', function(){
+
+  it('should register openhim channel successfully', function(done){
+    app.registerChannel(validChannelConfig, function(err, result){
+      if(err) {
+        return done(err);
+      }
+      assert(result.statusCode==201, "Channel created successfully");
+      done();
+    });
+  });
+
+  it('should fail to register openhim channel', function(done){
+    app.registerChannel(invalidChannelConfig, function(err, result){
+      if(err) {
+        return done(err);
+      }
+      assert(result.statusCode==400, "Failed to create channel");
       done();
     });
   });

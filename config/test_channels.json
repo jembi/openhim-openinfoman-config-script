@@ -1,0 +1,59 @@
+{
+  "valid": {
+    "name": "TestChannel1",
+    "urlPattern": "test/sample",
+    "allow": [ "PoC", "Test1", "Test2" ],
+    "routes": [
+        {
+          "name": "test route",
+          "host": "localhost",
+          "port": 9876,
+          "primary": true
+        }
+      ],
+    "txViewAcl": "aGroup"
+},
+"invalid": {
+  "requestBody" : true,
+  "responseBody" : true,
+  "name" : "invalid",
+  "description" : "",
+  "urlPattern" : "",
+  "matchContentRegex" : null,
+  "matchContentXpath" : null,
+  "matchContentValue" : null,
+  "matchContentJson" : null,
+  "pollingSchedule" : null,
+  "tcpHost" : null,
+  "tcpPort" : null,
+  "rewriteUrlsConfig" : [ ],
+  "addAutoRewriteRules" : true,
+  "rewriteUrls" : false,
+  "status" : "enabled",
+  "alerts" : [ ],
+  "txRerunAcl" : [ ],
+  "txViewFullAcl" : [ ],
+  "txViewAcl" : [ ],
+  "properties" : [ ],
+  "matchContentTypes" : [ ],
+  "routes" : [
+    {
+      "name" : "",
+      "secured" : false,
+      "host" : "",
+      "port" : null,
+      "path" : "",
+      "pathTransform" : "",
+      "primary" : true,
+      "username" : "",
+      "password" : "",
+      "status" : "enabled",
+      "type" : "http"
+    }
+  ],
+  "authType" : "private",
+  "whitelist" : [ ],
+  "allow" : [],
+  "type" : "http"
+}
+}
