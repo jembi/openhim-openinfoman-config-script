@@ -50,7 +50,7 @@ var expected = {
 };
 
  
-describe('Get documents', function() {
+describe('Get documents from openifoman', function() {
 	beforeEach(function() {
 		this.request = sinon.stub(http, 'request');
 	});
@@ -58,7 +58,6 @@ describe('Get documents', function() {
 	afterEach(function() {
 		http.request.restore();
 	});
- 
  
   it('should convert openinfoman GET result to array of documents', function(done) {
   	var response = new PassThrough();
@@ -77,5 +76,22 @@ describe('Get documents', function() {
       done();
     });
   });
- 
 });
+
+describe('Create Channel Config Object from Document Name', function() {
+  it('should create a channel config object', function(done) {
+  	app.createChannelConfigObject("DocumentName", function(err, result) {
+      if(err) {
+        return done(err);
+      }
+      assert.equal(result.name, 'DocumentName', "Channel Name");
+      assert.equal(result.urlPattern, '^/openinfoman/DocumentName$', "URL pattern");
+      assert.equal(result.allow[0], "admin", "Clients/Roles");
+      assert.equal(result.routes[0].name, 'DocumentName Route', "Route Name");
+      assert.equal(result.routes[0].host, 'localhost', "Host URL");
+      assert.equal(result.routes[0].port, 6000, "Host Port");
+      done();
+    });
+  });
+});
+
