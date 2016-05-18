@@ -1,12 +1,11 @@
 var assert = require('assert');
 var sinon = require('sinon');
-var PassThrough = require('stream').PassThrough;
+var nock = require("nock");
 var http = require('http');
  
 var app = require('../lib/app.js');
 
-
-var expected = {
+var expectedResponse = {
   "providers": {
       "careServicesRequest": "http://localhost:8984/CSD/csr/providers/careServicesRequest",
       "careServicesRequests": {
@@ -50,24 +49,15 @@ var expected = {
 };
 
  
-describe('Get documents from openifoman', function() {
-	beforeEach(function() {
-		this.request = sinon.stub(http, 'request');
+describe('Get documents', function() {
+  beforeEach(function() {
+    nock("http://localhost:8984")
+      .get("/CSD/documents.json")
+      .reply(200, expectedResponse);
 	});
- 
-	afterEach(function() {
-		http.request.restore();
-	});
- 
+  
   it('should convert openinfoman GET result to array of documents', function(done) {
-  	var response = new PassThrough();
-  	response.write(JSON.stringify(expected));
-  	response.end();
-   
-  	var request = new PassThrough();
-  	this.request.callsArgWith(1, response).returns(request);
-   
-  	app.getDocuments({}, function(err, result) {
+  	app.getDocuments(function(err, result) {
       if(err) {
         return done(err);
       }
