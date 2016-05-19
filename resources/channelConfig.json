@@ -1,0 +1,43 @@
+{
+	"requestBody" : true,
+	"responseBody" : true,
+	"name" : "",
+	"description" : "",
+	"urlPattern" : "",
+	"matchContentRegex" : null,
+	"matchContentXpath" : null,
+	"matchContentValue" : null,
+	"matchContentJson" : null,
+	"pollingSchedule" : null,
+	"tcpHost" : null,
+	"tcpPort" : null,
+	"rewriteUrlsConfig" : [ ],
+	"addAutoRewriteRules" : true,
+	"rewriteUrls" : false,
+	"status" : "enabled",
+	"alerts" : [ ],
+	"txRerunAcl" : [ ],
+	"txViewFullAcl" : [ ],
+	"txViewAcl" : [ ],
+	"properties" : [ ],
+	"matchContentTypes" : [ ],
+	"routes" : [
+		{
+			"name" : "",
+			"secured" : false,
+			"host" : "",
+			"port" : null,
+			"path" : "",
+			"pathTransform" : "",
+			"primary" : true,
+			"username" : "",
+			"password" : "",
+			"status" : "enabled",
+			"type" : "http"
+		}
+	],
+	"authType" : "private",
+	"whitelist" : [ ],
+	"allow" : [],
+	"type" : "http"
+}
