@@ -4,5 +4,12 @@
     "port": 8984,
     "path": "/CSD/documents.json",
     "agent": false
+  },
+  "openhimApi": {
+    "username": "root@openhim.org",
+    "password": "password",
+    "host": "localhost",
+    "protocol": "https",
+    "port": 8080
   }
 }

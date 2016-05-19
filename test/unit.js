@@ -1,8 +1,9 @@
+const _ = require('lodash')
 var assert = require('assert');
 var sinon = require('sinon');
-var nock = require("nock");
+var nock = require('nock');
 var http = require('http');
- 
+
 var app = require('../lib/app.js');
 
 var expectedResponse = {
@@ -48,14 +49,13 @@ var expectedResponse = {
   }
 };
 
- 
 describe('Get documents', function() {
   beforeEach(function() {
     nock("http://localhost:8984")
       .get("/CSD/documents.json")
       .reply(200, expectedResponse);
 	});
-  
+
   it('should convert openinfoman GET result to array of documents', function(done) {
   	app.getDocuments(function(err, result) {
       if(err) {
@@ -85,3 +85,52 @@ describe('Create Channel Config Object from Document Name', function() {
   });
 });
 
+describe('Register Channel: ', function(){
+  var checkValidRequest = function(body){
+    return body.urlPattern && body.name && body.routes[0].name
+      && body.routes[0].host && body.routes[0].port? true : false;
+  }
+
+  beforeEach(function() {
+    // mock OpenHim server reponses
+    nock("http://localhost:8080")
+      .get("/authenticate/root@openhim.org")
+      .reply(200, {
+        "salt": "test-salt",
+        "ts": "test-ts"
+      })
+      .post("/channels", function(body){
+         return checkValidRequest(body);
+      })
+      .reply(201)
+      .post("/channels", function(body){
+        // only want to accept invalid requests here
+        return checkValidRequest(body)? false : true;
+      })
+      .reply(400);
+	});
+
+  var testChannels = _.cloneDeep(require("../config/test_channels.json"));
+  var validChannelConfig = testChannels.valid;
+  var invalidChannelConfig = testChannels.invalid;
+
+  it('should register openhim channel successfully', function(done){
+    app.registerChannel(validChannelConfig, function(err, result){
+      if(err) {
+        return done(err);
+      }
+      assert(result.statusCode==201, "Channel created successfully");
+      done();
+    });
+  });
+
+  it('should fail to register openhim channel', function(done){
+    app.registerChannel(invalidChannelConfig, function(err, result){
+      if(err) {
+        return done(err);
+      }
+      assert(result.statusCode==400, "Failed to create channel");
+      done();
+    });
+  });
+});
