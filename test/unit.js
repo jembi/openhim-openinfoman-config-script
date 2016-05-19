@@ -75,6 +75,11 @@ describe('Get documents', function() {
 });
 
 describe('Register Channel: ', function(){
+  var checkValidRequest = function(body){
+    return body.urlPattern && body.name && body.routes[0].name
+      && body.routes[0].host && body.routes[0].port? true : false;
+  }
+
   beforeEach(function() {
     // mock OpenHim server reponses
     nock("http://localhost:8080")
@@ -84,13 +89,12 @@ describe('Register Channel: ', function(){
         "ts": "test-ts"
       })
       .post("/channels", function(body){
-        return body.urlPattern && body.name && body.routes[0].name
-          && body.routes[0].host && body.routes[0].port? true : false;
+         return checkValidRequest(body);
       })
       .reply(201)
       .post("/channels", function(body){
-        return body.urlPattern && body.name && body.routes[0].name
-          && body.routes[0].host && body.routes[0].port? false : true;
+        // only want to accept invalid requests here
+        return checkValidRequest(body)? false : true;
       })
       .reply(400);
 	});
