@@ -7,11 +7,16 @@
     "test": "mocha test/unit.js",
     "start": "node lib/app.js"
   },
+  "bin": {
+    "cnf-openhim-openinfoman": "lib/app.js"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/jembi/openhim-openinfoman-config-script"
   },
-  "dependencies": {},
+  "dependencies": {
+    "command-line-args": "^2.1.6"
+  },
   "devDependencies": {
     "assert": "^1.3.0",
     "mocha": "^2.4.5",
