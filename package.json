@@ -4,7 +4,7 @@
   "description": "Configure openhim channels using openinfoman documents",
   "author": "Jembi Health Systems NPC",
   "scripts": {
-    "test": "mocha test/unit.js",
+    "test": "mocha test/*.js",
     "start": "node lib/app.js"
   },
   "bin": {

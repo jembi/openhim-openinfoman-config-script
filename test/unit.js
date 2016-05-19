@@ -1,3 +1,5 @@
+'use strict'
+
 const _ = require('lodash')
 var assert = require('assert');
 var sinon = require('sinon');
@@ -80,56 +82,6 @@ describe('Create Channel Config Object from Document Name', function() {
       assert.equal(result.routes[0].name, 'DocumentName Route', "Route Name");
       assert.equal(result.routes[0].host, 'localhost', "Host URL");
       assert.equal(result.routes[0].port, 6000, "Host Port");
-      done();
-    });
-  });
-});
-
-describe('Register Channel: ', function(){
-  var checkValidRequest = function(body){
-    return body.urlPattern && body.name && body.routes[0].name
-      && body.routes[0].host && body.routes[0].port? true : false;
-  }
-
-  beforeEach(function() {
-    // mock OpenHim server reponses
-    nock("http://localhost:8080")
-      .get("/authenticate/root@openhim.org")
-      .reply(200, {
-        "salt": "test-salt",
-        "ts": "test-ts"
-      })
-      .post("/channels", function(body){
-         return checkValidRequest(body);
-      })
-      .reply(201)
-      .post("/channels", function(body){
-        // only want to accept invalid requests here
-        return checkValidRequest(body)? false : true;
-      })
-      .reply(400);
-	});
-
-  var testChannels = _.cloneDeep(require("../config/test_channels.json"));
-  var validChannelConfig = testChannels.valid;
-  var invalidChannelConfig = testChannels.invalid;
-
-  it('should register openhim channel successfully', function(done){
-    app.registerChannel(validChannelConfig, function(err, result){
-      if(err) {
-        return done(err);
-      }
-      assert(result.statusCode==201, "Channel created successfully");
-      done();
-    });
-  });
-
-  it('should fail to register openhim channel', function(done){
-    app.registerChannel(invalidChannelConfig, function(err, result){
-      if(err) {
-        return done(err);
-      }
-      assert(result.statusCode==400, "Failed to create channel");
       done();
     });
   });
