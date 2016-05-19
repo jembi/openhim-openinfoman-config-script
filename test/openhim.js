@@ -4,7 +4,7 @@ const _ = require('lodash')
 const assert = require('assert');
 const nock = require('nock');
 
-const OpenHIM = require('../lib/openhim.js')
+const OpenHIM = require('../lib/openhim')
 
 describe('Register Channel: ', function(){
   var checkValidRequest = function(body){
@@ -31,7 +31,7 @@ describe('Register Channel: ', function(){
       .reply(400);
 	});
 
-  var testChannels = _.cloneDeep(require("../config/test_channels.json"));
+  var testChannels = _.cloneDeep(require("../resources/test_channels.json"));
   var validChannelConfig = testChannels.valid;
   var invalidChannelConfig = testChannels.invalid;
 

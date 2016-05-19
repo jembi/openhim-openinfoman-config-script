@@ -1,12 +1,10 @@
 'use strict'
 
-const _ = require('lodash')
-var assert = require('assert');
-var sinon = require('sinon');
-var nock = require('nock');
-var http = require('http');
+const assert = require('assert');
+const nock = require('nock');
 
-var app = require('../lib/app.js');
+const OpenInfoMan = require('../lib/openinfoman');
+const openinfoman = OpenInfoMan('http://localhost:8984')
 
 var expectedResponse = {
   "providers": {
@@ -59,29 +57,12 @@ describe('Get documents', function() {
 	});
 
   it('should convert openinfoman GET result to array of documents', function(done) {
-  	app.getDocuments(function(err, result) {
+  	openinfoman.getDocuments(function(err, result) {
       if(err) {
         return done(err);
       }
       assert.equal(result[0], 'providers', "Correct result array");
       assert.equal(result[1], 'RapidProContacts', "Correct result array");
-      done();
-    });
-  });
-});
-
-describe('Create Channel Config Object from Document Name', function() {
-  it('should create a channel config object', function(done) {
-  	app.createChannelConfigObject("DocumentName", function(err, result) {
-      if(err) {
-        return done(err);
-      }
-      assert.equal(result.name, 'DocumentName', "Channel Name");
-      assert.equal(result.urlPattern, '^/CSD/csr/DocumentName/careServicesRequest.*$', "URL pattern");
-      assert.equal(result.allow[0], "admin", "Clients/Roles");
-      assert.equal(result.routes[0].name, 'DocumentName Route', "Route Name");
-      assert.equal(result.routes[0].host, 'localhost', "Host URL");
-      assert.equal(result.routes[0].port, 6000, "Host Port");
       done();
     });
   });

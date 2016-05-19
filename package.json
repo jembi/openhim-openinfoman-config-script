@@ -5,10 +5,10 @@
   "author": "Jembi Health Systems NPC",
   "scripts": {
     "test": "mocha test/*.js",
-    "start": "node lib/app.js"
+    "start": "node lib/index.js"
   },
   "bin": {
-    "cnf-openhim-openinfoman": "lib/app.js"
+    "cnf-openhim-openinfoman": "lib/index.js"
   },
   "repository": {
     "type": "git",
