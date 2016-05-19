@@ -12,28 +12,28 @@
         }
       ],
     "txViewAcl": "aGroup"
-},
-"invalid": {
-  "name" : "invalid",
-  "description" : "",
-  "urlPattern" : "",
-  "status" : "enabled",
-  "alerts" : [ ],
-  "routes" : [
-    {
-      "name" : "",
-      "secured" : false,
-      "host" : "",
-      "port" : null,
-      "path" : "",
-      "pathTransform" : "",
-      "primary" : true,
-      "username" : "",
-      "password" : "",
-      "status" : "enabled",
-      "type" : "http"
-    }
-  ],
-  "allow" : []
-}
+  },
+  "invalid": {
+    "name" : "invalid",
+    "description" : "",
+    "urlPattern" : "",
+    "status" : "enabled",
+    "alerts" : [ ],
+    "routes" : [
+      {
+        "name" : "",
+        "secured" : false,
+        "host" : "",
+        "port" : null,
+        "path" : "",
+        "pathTransform" : "",
+        "primary" : true,
+        "username" : "",
+        "password" : "",
+        "status" : "enabled",
+        "type" : "http"
+      }
+    ],
+    "allow" : []
+  }
 }

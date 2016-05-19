@@ -75,6 +75,25 @@ describe('Get documents', function() {
 });
 
 describe('Register Channel: ', function(){
+  beforeEach(function() {
+    // mock OpenHim server reponses
+    nock("http://localhost:8080")
+      .get("/authenticate/root@openhim.org")
+      .reply(200, {
+        "salt": "test-salt",
+        "ts": "test-ts"
+      })
+      .post("/channels", function(body){
+        return body.urlPattern && body.name && body.routes[0].name
+          && body.routes[0].host && body.routes[0].port? true : false;
+      })
+      .reply(201)
+      .post("/channels", function(body){
+        return body.urlPattern && body.name && body.routes[0].name
+          && body.routes[0].host && body.routes[0].port? false : true;
+      })
+      .reply(400);
+	});
 
   it('should register openhim channel successfully', function(done){
     app.registerChannel(validChannelConfig, function(err, result){

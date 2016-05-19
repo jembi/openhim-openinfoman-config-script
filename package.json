@@ -12,8 +12,8 @@
     "url": "https://github.com/jembi/openhim-openinfoman-config-script"
   },
   "dependencies": {
-    "crypto": "0.0.3",
-    "needle": "^1.0.0"
+    "needle": "^1.0.0",
+    "openhim-mediator-utils": "^0.2.2"
   },
   "devDependencies": {
     "assert": "^1.3.0",
