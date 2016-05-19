@@ -75,7 +75,7 @@ describe('Create Channel Config Object from Document Name', function() {
         return done(err);
       }
       assert.equal(result.name, 'DocumentName', "Channel Name");
-      assert.equal(result.urlPattern, '^/CSD/csr/DocumentName/careServicesRequest$', "URL pattern");
+      assert.equal(result.urlPattern, '^/CSD/csr/DocumentName/careServicesRequest.*$', "URL pattern");
       assert.equal(result.allow[0], "admin", "Clients/Roles");
       assert.equal(result.routes[0].name, 'DocumentName Route', "Route Name");
       assert.equal(result.routes[0].host, 'localhost', "Host URL");
