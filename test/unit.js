@@ -48,9 +48,9 @@ var expectedResponse = {
   }
 };
 
-var fs = require("fs");
-var testChannels = JSON.parse(fs.readFileSync("config/test_channels.json"));
+const _ = require('lodash')
 
+var testChannels = _.cloneDeep(require("../config/test_channels.json"));
 var validChannelConfig = testChannels.valid;
 var invalidChannelConfig = testChannels.invalid;
 
