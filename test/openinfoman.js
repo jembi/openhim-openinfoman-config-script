@@ -3,6 +3,7 @@
 
 const assert = require('assert')
 const nock = require('nock')
+const _ = require('lodash')
 
 const OpenInfoMan = require('../lib/openinfoman')
 const openinfoman = OpenInfoMan('http://localhost:8984')
@@ -57,13 +58,15 @@ describe('Get documents', function () {
       .reply(200, expectedResponse)
   })
 
-  it('should convert openinfoman GET result to array of documents', function (done) {
+  it('should convert openinfoman GET result to array of document objects', function (done) {
     openinfoman.getDocuments(function (err, result) {
       if (err) {
         return done(err)
       }
-      assert.equal(result[0], 'providers', 'Correct result array')
-      assert.equal(result[1], 'RapidProContacts', 'Correct result array')
+      assert.equal(result[0].document, 'providers', 'Contain providers doc')
+      assert.deepEqual(result[0].functions, _.keys(expectedResponse.providers.careServicesRequests), 'Contain functions for providers doc')
+      assert.equal(result[1].document, 'RapidProContacts', 'Contain RapidProContacts doc')
+      assert.deepEqual(result[1].functions, _.keys(expectedResponse.RapidProContacts.careServicesRequests), 'Contain functions for RapidProContacts doc')
       done()
     })
   })
