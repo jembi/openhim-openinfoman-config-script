@@ -69,7 +69,7 @@ describe('Configurator - Edit Doc Menu', function () {
       documents[0]
     )
 
-    menu.commands['1'].execute()
+    menu.commands['1'].execute() // 1: Back
     assert(seenCall)
 
     done()

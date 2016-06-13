@@ -65,7 +65,7 @@ describe('Configurator - Main Menu', function () {
       }
     })
 
-    menu.commands['1'].execute()
+    menu.commands['1'].execute() // 1: Quit
     assert(seenCall)
 
     done()
@@ -82,7 +82,7 @@ describe('Configurator - Main Menu', function () {
       }
     })
 
-    menu.commands['2'].execute()
+    menu.commands['2'].execute() // 2: Reset
     assert(seenCall)
 
     done()
@@ -99,7 +99,7 @@ describe('Configurator - Main Menu', function () {
       }
     })
 
-    menu.commands['3'].execute()
+    menu.commands['3'].execute() // 3: Done
     assert(seenCall)
 
     done()

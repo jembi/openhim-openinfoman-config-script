@@ -65,7 +65,7 @@ describe('Configurator - Edit Roles Menu', function () {
       }
     })
 
-    menu.commands['1'].execute()
+    menu.commands['1'].execute() // 1: Back
     assert(seenCall)
 
     done()
@@ -84,7 +84,7 @@ describe('Configurator - Edit Roles Menu', function () {
       printCurrent: () => {}
     })
 
-    menu.commands['2'].execute()
+    menu.commands['2'].execute() // 2: Add new role
     assert.equal(roles.length, 4)
     assert.equal(roles[3], 'test-role', 'should add test-role to roles')
 
