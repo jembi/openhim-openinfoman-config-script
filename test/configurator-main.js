@@ -17,7 +17,8 @@ describe('Configurator - Main Menu', function () {
         functions: [
           'urn:ihe:iti:csd:2014:stored-function:facility-search',
           'urn:ihe:iti:csd:2014:adhoc'
-        ]
+        ],
+        functionRoles: {}
       },
       {
         document: 'RapidProContacts',
@@ -99,6 +100,24 @@ describe('Configurator - Main Menu', function () {
     })
 
     menu.commands['3'].execute()
+    assert(seenCall)
+
+    done()
+  })
+
+  it('edit command should trigger edit doc menu', (done) => {
+    let seenCall = false
+
+    let menu = MainMenu({
+      documents: documents,
+      roles: ['providers', 'RapidProContacts', 'admin'],
+      changeMenu: (Menu, param) => {
+        seenCall = true
+        assert.equal(param.document, 'providers', 'should pass providers document through')
+      }
+    })
+
+    menu.commands['5'].execute() // 5: Edit providers
     assert(seenCall)
 
     done()

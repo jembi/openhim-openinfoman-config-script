@@ -16,7 +16,8 @@ describe('Configurator - Edit Roles Menu', function () {
         functions: [
           'urn:ihe:iti:csd:2014:stored-function:facility-search',
           'urn:ihe:iti:csd:2014:adhoc'
-        ]
+        ],
+        functionRoles: {}
       },
       {
         document: 'RapidProContacts',
