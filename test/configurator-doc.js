@@ -43,7 +43,7 @@ describe('Configurator - Edit Doc Menu', function () {
       documents[0]
     )
     assert(menu.commands)
-    //assert.equal(_.keys(menu.commands).length, 8, 'menu should contain 8 items')
+    assert.equal(_.keys(menu.commands).length, 6, 'menu should contain 6 items')
     assert.equal(menu.commands['1'].text, 'Back')
     assert.equal(menu.commands['2'].text, 'Exclude document')
 

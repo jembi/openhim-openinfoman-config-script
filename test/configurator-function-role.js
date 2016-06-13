@@ -98,8 +98,6 @@ describe('Configurator - Edit Function Role Menu', function () {
   })
 
   it('Remove role command should remove current function role', (done) => {
-    let seenCall = false
-
     let menu = EditFunctionRoleMenu({
       documents: documents,
       roles: ['providers', 'RapidProContacts', 'admin'],
