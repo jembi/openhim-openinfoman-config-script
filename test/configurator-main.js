@@ -44,7 +44,7 @@ describe('Configurator - Main Menu', function () {
     assert.equal(_.keys(menu.commands).length, 6, 'menu should contain 6 items')
     assert.equal(menu.commands['1'].text, 'Quit')
     assert.equal(menu.commands['2'].text, 'Reset')
-    assert.equal(menu.commands['3'].text, 'Done - Submit configuration to OpenHIM')
+    assert.equal(menu.commands['3'].text, 'Submit configuration to OpenHIM')
     assert.equal(menu.commands['4'].text, 'Edit Roles')
 
     let contains = (text, op, doc) => text.indexOf(op) > -1 && text.indexOf(doc) > -1
@@ -88,18 +88,18 @@ describe('Configurator - Main Menu', function () {
     done()
   })
 
-  it('done command should trigger configurator.done', (done) => {
+  it('done command should trigger configurator.submit', (done) => {
     let seenCall = false
 
     let menu = MainMenu({
       documents: documents,
       roles: ['providers', 'RapidProContacts', 'admin'],
-      done: () => {
+      submit: () => {
         seenCall = true
       }
     })
 
-    menu.commands['3'].execute() // 3: Done
+    menu.commands['3'].execute() // 3: Submit
     assert(seenCall)
 
     done()
