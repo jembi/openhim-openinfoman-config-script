@@ -21,6 +21,7 @@
     "lodash": "^4.12.0",
     "needle": "^1.0.0",
     "openhim-mediator-utils": "^0.2.2",
+    "parse-numeric-range": "0.0.2",
     "q": "^1.4.1"
   },
   "devDependencies": {

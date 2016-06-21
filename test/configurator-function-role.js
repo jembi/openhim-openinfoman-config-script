@@ -5,7 +5,7 @@ const assert = require('assert')
 const _ = require('lodash')
 const EditFunctionRoleMenu = require('../lib/configurator-function-role')
 
-describe('Configurator - Edit Function Role Menu', function () {
+describe('Configurator - Edit Function Roles Menu', function () {
   let documents = null
 
   beforeEach(() => {
@@ -16,100 +16,183 @@ describe('Configurator - Edit Function Role Menu', function () {
         include: true,
         functions: [
           'urn:ihe:iti:csd:2014:stored-function:facility-search',
-          'urn:ihe:iti:csd:2014:adhoc'
-        ],
-        functionRoles: {}
-      },
-      {
-        document: 'RapidProContacts',
-        role: 'RapidProContacts',
-        include: true,
-        functions: [
+          'urn:ihe:iti:csd:2014:adhoc',
           'urn:ihe:iti:csd:2014:stored-function:service-search',
           'urn:ihe:iti:csd:2014:stored-function:organization-search'
         ],
-        functionRoles: {
-          'urn:ihe:iti:csd:2014:stored-function:organization-search': 'admin'
-        }
+        functionRoles: {}
       }
     ]
   })
 
-  it('build the command list and include role options', (done) => {
+  it('build the command list and include function list', (done) => {
     let menu = EditFunctionRoleMenu({
       documents: documents,
       roles: ['providers', 'RapidProContacts', 'admin']
     },
-      documents[0],
-      'urn:ihe:iti:csd:2014:adhoc'
+      documents[0]
     )
     assert(menu.commands)
     assert.equal(_.keys(menu.commands).length, 4, 'menu should contain 4 items')
-    assert.equal(menu.commands['1'].text, 'Back')
-
-    let contains = (text, op, doc) => text.indexOf(op) > -1 && text.indexOf(doc) > -1
-    assert(contains(menu.commands['2'].text, 'Switch role to', 'providers'))
-    assert(contains(menu.commands['3'].text, 'Switch role to', 'RapidProContacts'))
-    assert(contains(menu.commands['4'].text, 'Switch role to', 'admin'))
+    let contains = (text, func) => text.indexOf(func) > -1
+    assert(contains(menu.commands['1'].text, 'urn:ihe:iti:csd:2014:stored-function:facility-search'))
+    assert(contains(menu.commands['2'].text, 'urn:ihe:iti:csd:2014:adhoc'))
+    assert(contains(menu.commands['3'].text, 'urn:ihe:iti:csd:2014:stored-function:service-search'))
+    assert(contains(menu.commands['4'].text, 'urn:ihe:iti:csd:2014:stored-function:organization-search'))
 
     done()
   })
 
-  it('build the command list and include remove and role options', (done) => {
-    let menu = EditFunctionRoleMenu({
-      documents: documents,
-      roles: ['providers', 'RapidProContacts', 'admin']
-    },
-      documents[1],
-      'urn:ihe:iti:csd:2014:stored-function:organization-search'
-    )
-    assert(menu.commands)
-    assert.equal(_.keys(menu.commands).length, 4, 'menu should contain 4 items')
-    assert.equal(menu.commands['1'].text, 'Back')
-
-    assert.equal(menu.commands['2'].text, 'Remove current role', 'document[1] has existing function roles - remove option should be present')
-
-    let contains = (text, op, doc) => text.indexOf(op) > -1 && text.indexOf(doc) > -1
-    assert(contains(menu.commands['3'].text, 'Switch role to', 'providers'))
-    assert(contains(menu.commands['4'].text, 'Switch role to', 'RapidProContacts'))
-
-    done()
-  })
-
-  it('Switch role command should set function role and popSelf', (done) => {
+  it('should trigger the apply role menu', (done) => {
     let seenCall = false
 
     let menu = EditFunctionRoleMenu({
       documents: documents,
       roles: ['providers', 'RapidProContacts', 'admin'],
-      popSelf: () => {
+      printCurrent: () => {},
+      popSelf: () => {},
+      changeMenu: (Menu, doc, functions) => {
         seenCall = true
+        assert.equal(doc.document, 'providers', 'should pass providers document through')
+        assert.equal(functions.length, 1, 'should pass 1 function through')
+        assert.equal(functions[0], 'urn:ihe:iti:csd:2014:stored-function:facility-search', 'should pass correct function through')
       }
     },
-      documents[0],
-      'urn:ihe:iti:csd:2014:adhoc'
+      documents[0]
     )
 
-    menu.commands['2'].execute() // 2: Switch role to providers
-    assert.equal(documents[0].functionRoles['urn:ihe:iti:csd:2014:adhoc'], 'providers', 'should set the providers role')
-    assert(seenCall, 'should popSelf')
+    menu.lineHandler('1')
+    assert(seenCall)
 
     done()
   })
 
-  it('Remove role command should remove current function role', (done) => {
+  it('should trigger the apply role menu and allow a range to be selected [1,3]', (done) => {
+    let seenCall = false
+
     let menu = EditFunctionRoleMenu({
       documents: documents,
       roles: ['providers', 'RapidProContacts', 'admin'],
-      printCurrent: () => {}
+      printCurrent: () => {},
+      popSelf: () => {},
+      changeMenu: (Menu, doc, functions) => {
+        seenCall = true
+        assert.equal(doc.document, 'providers', 'should pass providers document through')
+        assert.equal(functions.length, 2, 'should pass 2 functions through')
+        assert.equal(functions[0], 'urn:ihe:iti:csd:2014:stored-function:facility-search', 'should pass correct function through')
+        assert.equal(functions[1], 'urn:ihe:iti:csd:2014:stored-function:service-search', 'should pass correct function through')
+      }
     },
-      documents[1],
-      'urn:ihe:iti:csd:2014:stored-function:organization-search'
+      documents[0]
     )
 
-    menu.commands['2'].execute() // 2: Remove current role
-    assert(!documents[1].functionRoles['urn:ihe:iti:csd:2014:stored-function:organization-search'], 'should remove the admin role')
+    menu.lineHandler('1,3')
+    assert(seenCall)
 
+    done()
+  })
+
+  it('should trigger the apply role menu and allow a range to be selected [1-3]', (done) => {
+    let seenCall = false
+
+    let menu = EditFunctionRoleMenu({
+      documents: documents,
+      roles: ['providers', 'RapidProContacts', 'admin'],
+      printCurrent: () => {},
+      popSelf: () => {},
+      changeMenu: (Menu, doc, functions) => {
+        seenCall = true
+        assert.equal(doc.document, 'providers', 'should pass providers document through')
+        assert.equal(functions.length, 3, 'should pass 3 functions through')
+        assert.equal(functions[0], 'urn:ihe:iti:csd:2014:stored-function:facility-search', 'should pass correct function through')
+        assert.equal(functions[1], 'urn:ihe:iti:csd:2014:adhoc', 'should pass correct function through')
+        assert.equal(functions[2], 'urn:ihe:iti:csd:2014:stored-function:service-search', 'should pass correct function through')
+      }
+    },
+      documents[0]
+    )
+
+    menu.lineHandler('1-3')
+    assert(seenCall)
+
+    done()
+  })
+
+  it('should trigger the apply role menu and allow a range to be selected [1-3,4]', (done) => {
+    let seenCall = false
+
+    let menu = EditFunctionRoleMenu({
+      documents: documents,
+      roles: ['providers', 'RapidProContacts', 'admin'],
+      printCurrent: () => {},
+      popSelf: () => {},
+      changeMenu: (Menu, doc, functions) => {
+        seenCall = true
+        assert.equal(doc.document, 'providers', 'should pass providers document through')
+        assert.equal(functions.length, 4, 'should pass 4 functions through')
+        assert.equal(functions[0], 'urn:ihe:iti:csd:2014:stored-function:facility-search', 'should pass correct function through')
+        assert.equal(functions[1], 'urn:ihe:iti:csd:2014:adhoc', 'should pass correct function through')
+        assert.equal(functions[2], 'urn:ihe:iti:csd:2014:stored-function:service-search', 'should pass correct function through')
+        assert.equal(functions[3], 'urn:ihe:iti:csd:2014:stored-function:organization-search', 'should pass correct function through')
+      }
+    },
+      documents[0]
+    )
+
+    menu.lineHandler('1-3,4')
+    assert(seenCall)
+
+    done()
+  })
+
+  it('should not trigger the apply role menu if range is invalid [5]', (done) => {
+    let menu = EditFunctionRoleMenu({
+      documents: documents,
+      roles: ['providers', 'RapidProContacts', 'admin'],
+      printCurrent: () => {},
+      popSelf: () => {},
+      changeMenu: (Menu, doc, functions) => {
+        assert(false, 'should not trigger menu')
+      }
+    },
+      documents[0]
+    )
+
+    menu.lineHandler('5')
+    done()
+  })
+
+  it('should not trigger the apply role menu if range is invalid [0]', (done) => {
+    let menu = EditFunctionRoleMenu({
+      documents: documents,
+      roles: ['providers', 'RapidProContacts', 'admin'],
+      printCurrent: () => {},
+      popSelf: () => {},
+      changeMenu: (Menu, doc, functions) => {
+        assert(false, 'should not trigger menu')
+      }
+    },
+      documents[0]
+    )
+
+    menu.lineHandler('0')
+    done()
+  })
+
+  it('should not trigger the apply role menu if range is invalid [1,2,-1,3]', (done) => {
+    let menu = EditFunctionRoleMenu({
+      documents: documents,
+      roles: ['providers', 'RapidProContacts', 'admin'],
+      printCurrent: () => {},
+      popSelf: () => {},
+      changeMenu: (Menu, doc, functions) => {
+        assert(false, 'should not trigger menu')
+      }
+    },
+      documents[0]
+    )
+
+    menu.lineHandler('1,2,-1,3')
     done()
   })
 })

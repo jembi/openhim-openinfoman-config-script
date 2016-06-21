@@ -43,15 +43,14 @@ describe('Configurator - Edit Doc Menu', function () {
       documents[0]
     )
     assert(menu.commands)
-    assert.equal(_.keys(menu.commands).length, 6, 'menu should contain 6 items')
+    assert.equal(_.keys(menu.commands).length, 5, 'menu should contain 5 items')
     assert.equal(menu.commands['1'].text, 'Back')
     assert.equal(menu.commands['2'].text, 'Exclude document')
+    assert.equal(menu.commands['3'].text, 'Set roles for individual stored queries')
 
     let contains = (text, op, doc) => text.indexOf(op) > -1 && text.indexOf(doc) > -1
-    assert(contains(menu.commands['3'].text, 'Switch role to', 'RapidProContacts'))
-    assert(contains(menu.commands['4'].text, 'Switch role to', 'admin'))
-    assert(contains(menu.commands['5'].text, 'Set role for', 'urn:ihe:iti:csd:2014:stored-function:facility-search'))
-    assert(contains(menu.commands['6'].text, 'Set role for', 'urn:ihe:iti:csd:2014:adhoc'))
+    assert(contains(menu.commands['4'].text, 'Switch role to', 'RapidProContacts'))
+    assert(contains(menu.commands['5'].text, 'Switch role to', 'admin'))
 
     done()
   })
@@ -104,7 +103,7 @@ describe('Configurator - Edit Doc Menu', function () {
       documents[0]
     )
 
-    menu.commands['3'].execute() // 3: Switch role to RapidProContacts
+    menu.commands['4'].execute() // 4: Switch role to RapidProContacts
     assert.equal(documents[0].role, 'RapidProContacts', 'should switch role to RapidProContacts')
 
     done()
@@ -117,16 +116,15 @@ describe('Configurator - Edit Doc Menu', function () {
       documents: documents,
       roles: ['providers', 'RapidProContacts', 'admin'],
       printCurrent: () => {},
-      changeMenu: (Menu, param, csdFunction) => {
+      changeMenu: (Menu, doc) => {
         seenCall = true
-        assert.equal(param.document, 'providers', 'should pass providers document through')
-        assert.equal(csdFunction, 'urn:ihe:iti:csd:2014:stored-function:facility-search', 'should pass urn:ihe:iti:csd:2014:stored-function:facility-search function through')
+        assert.equal(doc.document, 'providers', 'should pass providers document through')
       }
     },
       documents[0]
     )
 
-    menu.commands['5'].execute() // 5: Set roles for urn:ihe:iti:csd:2014:stored-function:facility-search
+    menu.commands['3'].execute() // 3: Set roles for individual stored queries
     assert(seenCall)
 
     done()
