@@ -34,11 +34,12 @@ describe('Configurator - Apply Roles to Functions Menu', function () {
       documents[0].functions
     )
     assert(menu.commands)
-    assert.equal(_.keys(menu.commands).length, 3, 'menu should contain 3 items')
+    assert.equal(_.keys(menu.commands).length, 4, 'menu should contain 4 items')
+    assert.equal(menu.commands['1'].text, 'Cancel')
     let contains = (text, func) => text.indexOf(func) > -1
-    assert(contains(menu.commands['1'].text, 'providers'))
-    assert(contains(menu.commands['2'].text, 'RapidProContacts'))
-    assert(contains(menu.commands['3'].text, 'admin'))
+    assert(contains(menu.commands['2'].text, 'providers'))
+    assert(contains(menu.commands['3'].text, 'RapidProContacts'))
+    assert(contains(menu.commands['4'].text, 'admin'))
 
     done()
   })
@@ -57,7 +58,7 @@ describe('Configurator - Apply Roles to Functions Menu', function () {
       ['urn:ihe:iti:csd:2014:adhoc', 'urn:ihe:iti:csd:2014:stored-function:organization-search']
     )
 
-    menu.commands['1'].execute() // 1: providers
+    menu.commands['2'].execute() // 2: providers
     assert.equal(documents[0].functionRoles['urn:ihe:iti:csd:2014:adhoc'], 'providers', 'should set the correct role')
     assert.equal(documents[0].functionRoles['urn:ihe:iti:csd:2014:stored-function:organization-search'], 'providers', 'should set the correct role')
     assert(seenCall, 'should trigger configurator.popSelf')

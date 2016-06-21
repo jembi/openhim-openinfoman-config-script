@@ -33,12 +33,13 @@ describe('Configurator - Edit Function Roles Menu', function () {
       documents[0]
     )
     assert(menu.commands)
-    assert.equal(_.keys(menu.commands).length, 4, 'menu should contain 4 items')
+    assert.equal(_.keys(menu.commands).length, 5, 'menu should contain 5 items')
+    assert.equal(menu.commands['1'].text, 'Cancel')
     let contains = (text, func) => text.indexOf(func) > -1
-    assert(contains(menu.commands['1'].text, 'urn:ihe:iti:csd:2014:stored-function:facility-search'))
-    assert(contains(menu.commands['2'].text, 'urn:ihe:iti:csd:2014:adhoc'))
-    assert(contains(menu.commands['3'].text, 'urn:ihe:iti:csd:2014:stored-function:service-search'))
-    assert(contains(menu.commands['4'].text, 'urn:ihe:iti:csd:2014:stored-function:organization-search'))
+    assert(contains(menu.commands['2'].text, 'urn:ihe:iti:csd:2014:stored-function:facility-search'))
+    assert(contains(menu.commands['3'].text, 'urn:ihe:iti:csd:2014:adhoc'))
+    assert(contains(menu.commands['4'].text, 'urn:ihe:iti:csd:2014:stored-function:service-search'))
+    assert(contains(menu.commands['5'].text, 'urn:ihe:iti:csd:2014:stored-function:organization-search'))
 
     done()
   })
@@ -61,13 +62,13 @@ describe('Configurator - Edit Function Roles Menu', function () {
       documents[0]
     )
 
-    menu.lineHandler('1')
+    menu.lineHandler('2')
     assert(seenCall)
 
     done()
   })
 
-  it('should trigger the apply role menu and allow a range to be selected [1,3]', (done) => {
+  it('should trigger the apply role menu and allow a range to be selected [2,4]', (done) => {
     let seenCall = false
 
     let menu = EditFunctionRoleMenu({
@@ -86,13 +87,13 @@ describe('Configurator - Edit Function Roles Menu', function () {
       documents[0]
     )
 
-    menu.lineHandler('1,3')
+    menu.lineHandler('2,4')
     assert(seenCall)
 
     done()
   })
 
-  it('should trigger the apply role menu and allow a range to be selected [1-3]', (done) => {
+  it('should trigger the apply role menu and allow a range to be selected [2-4]', (done) => {
     let seenCall = false
 
     let menu = EditFunctionRoleMenu({
@@ -112,13 +113,13 @@ describe('Configurator - Edit Function Roles Menu', function () {
       documents[0]
     )
 
-    menu.lineHandler('1-3')
+    menu.lineHandler('2-4')
     assert(seenCall)
 
     done()
   })
 
-  it('should trigger the apply role menu and allow a range to be selected [1-3,4]', (done) => {
+  it('should trigger the apply role menu and allow a range to be selected [2-4,5]', (done) => {
     let seenCall = false
 
     let menu = EditFunctionRoleMenu({
@@ -139,13 +140,13 @@ describe('Configurator - Edit Function Roles Menu', function () {
       documents[0]
     )
 
-    menu.lineHandler('1-3,4')
+    menu.lineHandler('2-4,5')
     assert(seenCall)
 
     done()
   })
 
-  it('should not trigger the apply role menu if range is invalid [5]', (done) => {
+  it('should not trigger the apply role menu if range is invalid [6]', (done) => {
     let menu = EditFunctionRoleMenu({
       documents: documents,
       roles: ['providers', 'RapidProContacts', 'admin'],
@@ -158,7 +159,7 @@ describe('Configurator - Edit Function Roles Menu', function () {
       documents[0]
     )
 
-    menu.lineHandler('5')
+    menu.lineHandler('6')
     done()
   })
 
@@ -179,7 +180,7 @@ describe('Configurator - Edit Function Roles Menu', function () {
     done()
   })
 
-  it('should not trigger the apply role menu if range is invalid [1,2,-1,3]', (done) => {
+  it('should not trigger the apply role menu if range is invalid [2,3,-1,4]', (done) => {
     let menu = EditFunctionRoleMenu({
       documents: documents,
       roles: ['providers', 'RapidProContacts', 'admin'],
@@ -192,7 +193,7 @@ describe('Configurator - Edit Function Roles Menu', function () {
       documents[0]
     )
 
-    menu.lineHandler('1,2,-1,3')
+    menu.lineHandler('2,3,-1,4')
     done()
   })
 })
