@@ -1,7 +1,9 @@
 OpenInfoMan channel config for the OpenHIM
 ==========================================
 
-This tool queries the OpenInfoMan for all its registered documents and for each document a channel is created in the OpenHIM that routes requests to the OpenInfoMan. These channels can be used to restrict access to particular documents. By default the `admin` role is added to each channel, however, you may customise this config after the script has run to suit your needs.
+This tool queries the OpenInfoMan for all its registered documents and for each document a channel is created in the OpenHIM that routes requests to the OpenInfoMan. These channels can be used to restrict access to particular documents.
+
+By default, a role matching the name of a particular document will created for that document's channel. However this utility allows you to interactively define the roles that will be created before submitting the new channels to the OpenHIM. You can also use the utility to create roles for specific CSD functions.
 
 Install with `npm install -g openhim-openinfoman-config-script`
 
