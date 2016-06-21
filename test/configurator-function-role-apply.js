@@ -50,7 +50,7 @@ describe('Configurator - Apply Roles to Functions Menu', function () {
     let menu = ApplyRoleMenu({
       documents: documents,
       roles: ['providers', 'RapidProContacts', 'admin'],
-      popSelf: () => {
+      popCurrentMenu: () => {
         seenCall = true
       }
     },
@@ -61,7 +61,7 @@ describe('Configurator - Apply Roles to Functions Menu', function () {
     menu.commands['2'].execute() // 2: providers
     assert.equal(documents[0].functionRoles['urn:ihe:iti:csd:2014:adhoc'], 'providers', 'should set the correct role')
     assert.equal(documents[0].functionRoles['urn:ihe:iti:csd:2014:stored-function:organization-search'], 'providers', 'should set the correct role')
-    assert(seenCall, 'should trigger configurator.popSelf')
+    assert(seenCall, 'should trigger configurator.popCurrentMenu')
 
     done()
   })

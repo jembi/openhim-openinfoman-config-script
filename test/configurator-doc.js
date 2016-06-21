@@ -55,13 +55,13 @@ describe('Configurator - Edit Doc Menu', function () {
     done()
   })
 
-  it('back command should trigger configurator.popSelf', (done) => {
+  it('back command should trigger configurator.popCurrentMenu', (done) => {
     let seenCall = false
 
     let menu = EditDocMenu({
       documents: documents,
       roles: ['providers', 'RapidProContacts', 'admin'],
-      popSelf: () => {
+      popCurrentMenu: () => {
         seenCall = true
       }
     },
@@ -74,13 +74,13 @@ describe('Configurator - Edit Doc Menu', function () {
     done()
   })
 
-  it('exclude command should trigger exclude and trigger configurator.popSelf', (done) => {
+  it('exclude command should trigger exclude and trigger configurator.popCurrentMenu', (done) => {
     let seenCall = false
 
     let menu = EditDocMenu({
       documents: documents,
       roles: ['providers', 'RapidProContacts', 'admin'],
-      popSelf: () => {
+      popCurrentMenu: () => {
         seenCall = true
       }
     },

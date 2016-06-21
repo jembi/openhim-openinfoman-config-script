@@ -51,7 +51,7 @@ describe('Configurator - Edit Function Roles Menu', function () {
       documents: documents,
       roles: ['providers', 'RapidProContacts', 'admin'],
       printCurrent: () => {},
-      popSelf: () => {},
+      popCurrentMenu: () => {},
       changeMenu: (Menu, doc, functions) => {
         seenCall = true
         assert.equal(doc.document, 'providers', 'should pass providers document through')
@@ -75,7 +75,7 @@ describe('Configurator - Edit Function Roles Menu', function () {
       documents: documents,
       roles: ['providers', 'RapidProContacts', 'admin'],
       printCurrent: () => {},
-      popSelf: () => {},
+      popCurrentMenu: () => {},
       changeMenu: (Menu, doc, functions) => {
         seenCall = true
         assert.equal(doc.document, 'providers', 'should pass providers document through')
@@ -100,7 +100,7 @@ describe('Configurator - Edit Function Roles Menu', function () {
       documents: documents,
       roles: ['providers', 'RapidProContacts', 'admin'],
       printCurrent: () => {},
-      popSelf: () => {},
+      popCurrentMenu: () => {},
       changeMenu: (Menu, doc, functions) => {
         seenCall = true
         assert.equal(doc.document, 'providers', 'should pass providers document through')
@@ -126,7 +126,7 @@ describe('Configurator - Edit Function Roles Menu', function () {
       documents: documents,
       roles: ['providers', 'RapidProContacts', 'admin'],
       printCurrent: () => {},
-      popSelf: () => {},
+      popCurrentMenu: () => {},
       changeMenu: (Menu, doc, functions) => {
         seenCall = true
         assert.equal(doc.document, 'providers', 'should pass providers document through')
@@ -151,7 +151,7 @@ describe('Configurator - Edit Function Roles Menu', function () {
       documents: documents,
       roles: ['providers', 'RapidProContacts', 'admin'],
       printCurrent: () => {},
-      popSelf: () => {},
+      popCurrentMenu: () => {},
       changeMenu: (Menu, doc, functions) => {
         assert(false, 'should not trigger menu')
       }
@@ -168,7 +168,7 @@ describe('Configurator - Edit Function Roles Menu', function () {
       documents: documents,
       roles: ['providers', 'RapidProContacts', 'admin'],
       printCurrent: () => {},
-      popSelf: () => {},
+      popCurrentMenu: () => {},
       changeMenu: (Menu, doc, functions) => {
         assert(false, 'should not trigger menu')
       }
@@ -185,7 +185,7 @@ describe('Configurator - Edit Function Roles Menu', function () {
       documents: documents,
       roles: ['providers', 'RapidProContacts', 'admin'],
       printCurrent: () => {},
-      popSelf: () => {},
+      popCurrentMenu: () => {},
       changeMenu: (Menu, doc, functions) => {
         assert(false, 'should not trigger menu')
       }

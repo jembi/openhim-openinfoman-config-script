@@ -54,13 +54,13 @@ describe('Configurator - Edit Roles Menu', function () {
     done()
   })
 
-  it('back command should trigger configurator.popSelf', (done) => {
+  it('back command should trigger configurator.popCurrentMenu', (done) => {
     let seenCall = false
 
     let menu = EditRolesMenu({
       documents: documents,
       roles: ['providers', 'RapidProContacts', 'admin'],
-      popSelf: () => {
+      popCurrentMenu: () => {
         seenCall = true
       }
     })
