@@ -26,6 +26,19 @@ describe('Create Channel Config Object from Document Object', function () {
       'urn:ihe:iti:csd:2014:stored-function:organization-search': 'admin'
     }
   }
+  const testDoc3 = {
+    document: 'RapidProContacts',
+    role: 'RapidProContacts',
+    functions: [
+      'urn:ihe:iti:csd:2014:stored-function:facility-search',
+      'urn:ihe:iti:csd:2014:stored-function:service-search',
+      'urn:ihe:iti:csd:2014:stored-function:organization-search'
+    ],
+    functionRoles: {
+      'urn:ihe:iti:csd:2014:stored-function:service-search': 'admin',
+      'urn:ihe:iti:csd:2014:stored-function:organization-search': 'admin'
+    }
+  }
 
   it('should create a channel config object with path prefix', function (done) {
     index.createChannelConfigObject(testDoc1, { openinfoman: 'http://localhost:6000/test' }, function (err, results) {
@@ -73,12 +86,27 @@ describe('Create Channel Config Object from Document Object', function () {
       assert.equal(results[0].routes[0].host, 'localhost', 'Host URL')
       assert.equal(results[0].routes[0].port, 6000, 'Host Port')
 
-      assert.equal(results[1].name, 'RapidProContacts - urn:ihe:iti:csd:2014:stored-function:organization-search', 'Channel Name')
+      assert.equal(results[1].name, 'RapidProContacts - admin', 'Channel Name')
       assert.equal(results[1].urlPattern, '^/test/CSD/.*/RapidProContacts/careServicesRequest/urn:ihe:iti:csd:2014:stored-function:organization-search$', 'URL pattern')
       assert.equal(results[1].allow[0], 'admin', 'Clients/Roles')
-      assert.equal(results[1].routes[0].name, 'RapidProContacts - urn:ihe:iti:csd:2014:stored-function:organization-search route', 'Route Name')
+      assert.equal(results[1].routes[0].name, 'RapidProContacts - admin route', 'Route Name')
       assert.equal(results[1].routes[0].host, 'localhost', 'Host URL')
       assert.equal(results[1].routes[0].port, 6000, 'Host Port')
+
+      done()
+    })
+  })
+
+  it('should group CSD functions with the same role in the same channel', function (done) {
+    index.createChannelConfigObject(testDoc3, { openinfoman: 'http://localhost:6000/test' }, function (err, results) {
+      if (err) {
+        return done(err)
+      }
+      assert.equal(results.length, 2, 'Create two channels')
+      assert.equal(results[0].name, 'RapidProContacts', 'Channel Name')
+
+      assert.equal(results[1].name, 'RapidProContacts - admin', 'Channel Name')
+      assert.equal(results[1].urlPattern, '^/test/CSD/.*/RapidProContacts/careServicesRequest/(urn:ihe:iti:csd:2014:stored-function:service-search|urn:ihe:iti:csd:2014:stored-function:organization-search)$', 'URL pattern')
 
       done()
     })
